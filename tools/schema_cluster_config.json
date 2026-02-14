@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/mwpack/schema_cluster_config.json",
+  "title": "mwpack cluster config",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["it_cap_w", "node", "fabric"],
+  "properties": {
+    "it_cap_w": {"type": "number", "exclusiveMinimum": 0},
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gpu_count",
+        "gpu_power_w",
+        "cpu_power_w",
+        "baseboard_power_w",
+        "nic_power_w",
+        "storage_power_w",
+        "other_power_w"
+      ],
+      "properties": {
+        "gpu_count": {"type": "integer", "minimum": 1},
+        "gpu_power_w": {"type": "number", "exclusiveMinimum": 0},
+        "cpu_power_w": {"type": "number", "exclusiveMinimum": 0},
+        "baseboard_power_w": {"type": "number", "exclusiveMinimum": 0},
+        "nic_power_w": {"type": "number", "exclusiveMinimum": 0},
+        "storage_power_w": {"type": "number", "exclusiveMinimum": 0},
+        "other_power_w": {"type": "number", "minimum": 0}
+      }
+    },
+    "fabric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "host_ports_per_node",
+        "host_link_gbps",
+        "uplink_gbps",
+        "optics_power_w_per_uplink",
+        "leaf",
+        "spine"
+      ],
+      "properties": {
+        "host_ports_per_node": {"type": "integer", "minimum": 1},
+        "host_link_gbps": {"type": "number", "exclusiveMinimum": 0},
+        "uplink_gbps": {"type": "number", "exclusiveMinimum": 0},
+        "optics_power_w_per_uplink": {"type": "number", "minimum": 0},
+        "leaf": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ports", "host_ports", "uplink_ports", "power_w"],
+          "properties": {
+            "ports": {"type": "integer", "minimum": 1},
+            "host_ports": {"type": "integer", "minimum": 1},
+            "uplink_ports": {"type": "integer", "minimum": 1},
+            "power_w": {"type": "number", "exclusiveMinimum": 0}
+          }
+        },
+        "spine": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ports", "power_w"],
+          "properties": {
+            "ports": {"type": "integer", "minimum": 1},
+            "power_w": {"type": "number", "exclusiveMinimum": 0}
+          }
+        }
+      }
+    }
+  }
+}

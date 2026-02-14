@@ -1,0 +1,47 @@
+name: security
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "31 3 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  pinning-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+
+      - name: Setup Python
+        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
+        with:
+          python-version: "3.11"
+
+      - name: Check action pinning
+        run: python mwpack/_scripts/check_actions_pinning.py
+
+  codeql:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [python]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+
+      - name: Init CodeQL
+        uses: github/codeql-action/init@5cf07e6e9d6d9f4b4dc5d95e4b77fa1f7a196ee8 # v3.28.10
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Analyze CodeQL
+        uses: github/codeql-action/analyze@5cf07e6e9d6d9f4b4dc5d95e4b77fa1f7a196ee8 # v3.28.10

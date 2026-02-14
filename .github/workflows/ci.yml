@@ -1,0 +1,41 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+
+      - name: Setup Python
+        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
+        with:
+          python-version: "3.11"
+
+      - name: Compile
+        run: python -m compileall -q .
+
+      - name: Unit tests
+        run: python -m unittest -q
+
+      - name: Quickstart smoke test
+        run: |
+          python3 -m mwpack validate --memo docs/memo_template.md --config tools/example_5mw_config.json
+          python3 -m mwpack build --memo docs/memo_template.md --config tools/example_5mw_config.json --out dist/demo
+          python3 -m mwpack package --dir dist/demo
+          python3 -m zipfile -l dist/demo/bundle.zip | grep -q "MANIFEST.json"
+
+      - name: Upload dist (optional)
+        if: always()
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.6.0
+        with:
+          name: dist
+          path: dist
+          if-no-files-found: ignore

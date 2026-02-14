@@ -1,0 +1,28 @@
+{
+  "it_cap_w": 5000000,
+  "node": {
+    "gpu_count": 8,
+    "gpu_power_w": 700,
+    "cpu_power_w": 350,
+    "baseboard_power_w": 120,
+    "nic_power_w": 80,
+    "storage_power_w": 60,
+    "other_power_w": 40
+  },
+  "fabric": {
+    "host_ports_per_node": 1,
+    "host_link_gbps": 400,
+    "uplink_gbps": 400,
+    "optics_power_w_per_uplink": 8,
+    "leaf": {
+      "ports": 64,
+      "host_ports": 32,
+      "uplink_ports": 32,
+      "power_w": 450
+    },
+    "spine": {
+      "ports": 64,
+      "power_w": 500
+    }
+  }
+}

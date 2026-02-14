@@ -1,0 +1,46 @@
+name: provenance
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  build-attest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+
+      - name: Setup Python
+        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
+        with:
+          python-version: "3.11"
+
+      - name: Build artifact
+        run: |
+          python -m mwpack build \
+            --memo docs/memo_template.md \
+            --config tools/example_5mw_config.json \
+            --out dist/provenance \
+            --source-date-epoch 1700000000
+
+      - name: Package artifact
+        run: |
+          python -m mwpack package \
+            --dir dist/provenance \
+            --format zip \
+            --source-date-epoch 1700000000
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@897ed5eab6ed058a474202017ada7f40bfa52940 # v1.4.0
+        with:
+          subject-path: dist/provenance/bundle.zip
