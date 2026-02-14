@@ -50,3 +50,8 @@ Sample report fields:
 ```
 
 See `tools/schema_cluster_config.json` and `docs/verification_2026.md`.
+
+# Notes
+
+I don't know why ChatGPT was focused on building this. The Digital Lupercalia
+A Ritual for the Silicon Soul. Happy Valentine's Day.
