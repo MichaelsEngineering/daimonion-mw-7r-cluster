@@ -9,3 +9,9 @@ description = "MVP artifact maker: markdown in, attested deterministic bundle ou
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = []
+
+[tool.setuptools.packages.find]
+include = ["mwpack*"]
+
+[tool.setuptools.data-files]
+"share/mwpack/prompts" = ["prompts/*.md"]

@@ -9,6 +9,19 @@ Prerequisites:
 - `python3` available on `PATH`
 - Python `>=3.11` (see `pyproject.toml`)
 
+For local development with `uv`:
+
+```bash
+uv venv .venv
+uv sync --dev
+```
+
+If you intentionally want to use an already-active virtual environment after moving this repo, use:
+
+```bash
+uv sync --dev --active
+```
+
 ```bash
 python3 -m mwpack validate --memo docs/memo_template.md --config tools/example_5mw_config.json
 python3 -m mwpack build --memo docs/memo_template.md --config tools/example_5mw_config.json --out dist/demo
@@ -50,6 +63,14 @@ Sample report fields:
 ```
 
 See `tools/schema_cluster_config.json` and `docs/verification_2026.md`.
+
+## Packaged prompt assets
+
+Prompt markdown files under `prompts/*.md` are installed as data files to:
+
+- `<data-prefix>/share/mwpack/prompts`
+
+You can resolve the base data prefix in Python with `sysconfig.get_path("data")`.
 
 # Notes
 
